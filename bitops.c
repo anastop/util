@@ -16,14 +16,14 @@
  */ 
 unsigned long *bitarray_alloc(unsigned long nbits)
 {
-	unsigned long *base = (unsigned long*)malloc((nbits >> 3) + 1);
-	if ( !base ) {
-		fprintf(stderr, "Allocation error!\n");
-		exit(EXIT_FAILURE);
-	}
-	memset(base, 0, (nbits >> 3) + 1);
+    unsigned long *base = (unsigned long*)malloc((nbits >> 3) + 1);
+    if ( !base ) {
+        fprintf(stderr, "Allocation error!\n");
+        exit(EXIT_FAILURE);
+    }
+    memset(base, 0, (nbits >> 3) + 1);
 
-	return base;
+    return base;
 }
 
 /**
@@ -42,10 +42,10 @@ void bitarray_free(unsigned long *base)
  */ 
 inline void bit_reset_ll(char *byte_addr, int offset)
 {
-	__asm__ __volatile__ ("btr %1,%0"
-							: "=m" (*byte_addr)
-							: "Ir" (offset)
-							: "memory");
+    __asm__ __volatile__ ("btr %1,%0"
+                            : "=m" (*byte_addr)
+                            : "Ir" (offset)
+                            : "memory");
 }
 
 /**
@@ -55,10 +55,10 @@ inline void bit_reset_ll(char *byte_addr, int offset)
  */ 
 inline void bit_change_ll(char *byte_addr, int offset)
 {
-	__asm__ __volatile__ ("btc %1,%0"
-							: "=m" (*byte_addr)
-							: "Ir" (offset)
-							: "memory");
+    __asm__ __volatile__ ("btc %1,%0"
+                            : "=m" (*byte_addr)
+                            : "Ir" (offset)
+                            : "memory");
 }
 
 /**
@@ -68,10 +68,10 @@ inline void bit_change_ll(char *byte_addr, int offset)
  */ 
 inline void bit_set_ll(char *byte_addr, int offset)
 {
-	__asm__ __volatile__ ("bts %1,%0"
-							: "=m" (*byte_addr)
-							: "Ir" (offset)
-							: "memory");
+    __asm__ __volatile__ ("bts %1,%0"
+                            : "=m" (*byte_addr)
+                            : "Ir" (offset)
+                            : "memory");
 }
 
 /**
@@ -82,12 +82,12 @@ inline void bit_set_ll(char *byte_addr, int offset)
  */ 
 inline int bit_test_and_reset_ll(char *byte_addr, int offset)
 {
-	char result;
-	__asm__ __volatile__ ("btr %2,%0; setc %1"
-							: "=m" (*byte_addr), "=q" (result)
-							: "Ir" (offset)
-							: "memory");
-	return (int)result;
+    char result;
+    __asm__ __volatile__ ("btr %2,%0; setc %1"
+                            : "=m" (*byte_addr), "=q" (result)
+                            : "Ir" (offset)
+                            : "memory");
+    return (int)result;
 }
 
 /**
@@ -98,12 +98,12 @@ inline int bit_test_and_reset_ll(char *byte_addr, int offset)
  */ 
 inline int bit_test_and_change_ll(char *byte_addr, int offset)
 {
-	char result;
-	__asm__ __volatile__ ("btc %2,%0; setc %1"
-							: "=m" (*byte_addr), "=q" (result)
-							: "Ir" (offset)
-							: "memory");
-	return (int)result;
+    char result;
+    __asm__ __volatile__ ("btc %2,%0; setc %1"
+                            : "=m" (*byte_addr), "=q" (result)
+                            : "Ir" (offset)
+                            : "memory");
+    return (int)result;
 }
 
 /**
@@ -114,12 +114,12 @@ inline int bit_test_and_change_ll(char *byte_addr, int offset)
  */ 
 inline int bit_test_and_set_ll(char *byte_addr, int offset)
 {
-	char result;
-	__asm__ __volatile__ ("bts %2,%0; setc %1"
-							: "=m" (*byte_addr), "=q" (result)
-							: "Ir" (offset)
-							: "memory");
-	return (int)result;
+    char result;
+    __asm__ __volatile__ ("bts %2,%0; setc %1"
+                            : "=m" (*byte_addr), "=q" (result)
+                            : "Ir" (offset)
+                            : "memory");
+    return (int)result;
 }
 
 /**
@@ -130,12 +130,12 @@ inline int bit_test_and_set_ll(char *byte_addr, int offset)
  */ 
 inline int bit_test_ll(char *byte_addr, int offset)
 {
-	char result;
-	__asm__ __volatile__ ("bt %2,%0; setc %1"
-							: "=m" (*byte_addr), "=q" (result)
-							: "Ir" (offset)
-							: "memory");
-	return (int)result;
+    char result;
+    __asm__ __volatile__ ("bt %2,%0; setc %1"
+                            : "=m" (*byte_addr), "=q" (result)
+                            : "Ir" (offset)
+                            : "memory");
+    return (int)result;
 }
 
 /**
@@ -146,9 +146,9 @@ inline int bit_test_ll(char *byte_addr, int offset)
  */ 
 inline int bit_test(unsigned long *base, unsigned long bit)
 {
-	char *byte_addr = (char*)base + (bit >> 3);
-	int offset = bit & 7UL;
-	return bit_test_ll(byte_addr, offset);
+    char *byte_addr = (char*)base + (bit >> 3);
+    int offset = bit & 7UL;
+    return bit_test_ll(byte_addr, offset);
 }
 
 /**
@@ -159,9 +159,9 @@ inline int bit_test(unsigned long *base, unsigned long bit)
  */ 
 inline int bit_test_and_set(unsigned long *base, unsigned long bit)
 {
-	char *byte_addr = (char*)base + (bit >> 3);
-	int offset = bit & 7UL;
-	return bit_test_and_set_ll(byte_addr, offset);
+    char *byte_addr = (char*)base + (bit >> 3);
+    int offset = bit & 7UL;
+    return bit_test_and_set_ll(byte_addr, offset);
 }
 
 /**
@@ -172,9 +172,9 @@ inline int bit_test_and_set(unsigned long *base, unsigned long bit)
  */ 
 inline int bit_test_and_change(unsigned long *base, unsigned long bit)
 {
-	char *byte_addr = (char*)base + (bit >> 3);
-	int offset = bit & 7UL;
-	return bit_test_and_change_ll(byte_addr, offset);
+    char *byte_addr = (char*)base + (bit >> 3);
+    int offset = bit & 7UL;
+    return bit_test_and_change_ll(byte_addr, offset);
 }
 
 /**
@@ -185,9 +185,9 @@ inline int bit_test_and_change(unsigned long *base, unsigned long bit)
  */ 
 inline int bit_test_and_reset(unsigned long *base, unsigned long bit)
 {
-	char *byte_addr = (char*)base + (bit >> 3);
-	int offset = bit & 7UL;
-	return bit_test_and_reset_ll(byte_addr, offset);
+    char *byte_addr = (char*)base + (bit >> 3);
+    int offset = bit & 7UL;
+    return bit_test_and_reset_ll(byte_addr, offset);
 }
 
 /**
@@ -197,9 +197,9 @@ inline int bit_test_and_reset(unsigned long *base, unsigned long bit)
  */ 
 inline void bit_set(unsigned long *base, unsigned long bit)
 {
-	char *byte_addr = (char*)base + (bit >> 3);
-	int offset = bit & 7UL;
-	bit_set_ll(byte_addr, offset);
+    char *byte_addr = (char*)base + (bit >> 3);
+    int offset = bit & 7UL;
+    bit_set_ll(byte_addr, offset);
 }
 
 /**
@@ -209,9 +209,9 @@ inline void bit_set(unsigned long *base, unsigned long bit)
  */ 
 inline void bit_change(unsigned long *base, unsigned long bit)
 {
-	char *byte_addr = (char*)base + (bit >> 3);
-	int offset = bit & 7UL;
-	bit_change_ll(byte_addr, offset);
+    char *byte_addr = (char*)base + (bit >> 3);
+    int offset = bit & 7UL;
+    bit_change_ll(byte_addr, offset);
 }
 
 /**
@@ -221,8 +221,8 @@ inline void bit_change(unsigned long *base, unsigned long bit)
  */ 
 inline void bit_reset(unsigned long *base, unsigned long bit)
 {
-	char *byte_addr = (char*)base + (bit >> 3);
-	int offset = bit & 7UL;
-	bit_reset_ll(byte_addr, offset);
+    char *byte_addr = (char*)base + (bit >> 3);
+    int offset = bit & 7UL;
+    bit_reset_ll(byte_addr, offset);
 }
 

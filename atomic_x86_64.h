@@ -269,13 +269,13 @@ static inline int compare_and_swap(volatile unsigned long *p,
  */ 
 static inline int atomic_dec_and_test(volatile unsigned long *p)
 {
-	char result;
+    char result;
 
-	__asm__ __volatile__( "lock; decq %0; setz %1"
-					      :"=m" (*p), "=q" (result)
-						  :"m" (*p) 
-						  : "memory");
-	return (int)result;
+    __asm__ __volatile__( "lock; decq %0; setz %1"
+                          :"=m" (*p), "=q" (result)
+                          :"m" (*p) 
+                          : "memory");
+    return (int)result;
 }
 
 
@@ -434,13 +434,13 @@ static inline int compare_and_swap_int(volatile unsigned int *p,
  */ 
 static inline int atomic_dec_and_test_int(volatile unsigned int *p)
 {
-	char result;
+    char result;
 
-	__asm__ __volatile__( "lock; decl %0; setz %1"
-					      :"=m" (*p), "=q" (result)
-						  :"m" (*p) 
-						  : "memory");
-	return (int)result;
+    __asm__ __volatile__( "lock; decl %0; setz %1"
+                          :"=m" (*p), "=q" (result)
+                          :"m" (*p) 
+                          : "memory");
+    return (int)result;
 }
 
 

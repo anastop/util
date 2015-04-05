@@ -47,17 +47,17 @@ void trim(char *src, const char tc)
  */
 void* malloc_aligned(size_t size, size_t alignment)
 {
-	void *p;
+    void *p;
 
-	if ( !(p = malloc(size + alignment-1)) ) {
+    if ( !(p = malloc(size + alignment-1)) ) {
         fprintf(stderr, "%s: Allocation error\n", __FUNCTION__);
-		exit(EXIT_FAILURE);
-	}
+        exit(EXIT_FAILURE);
+    }
 
-	// Perform alignment 
-	p = (void *) (((unsigned long)p + alignment - 1) & ~(alignment - 1));
-										
-	return p;
+    // Perform alignment 
+    p = (void *) (((unsigned long)p + alignment - 1) & ~(alignment - 1));
+                                        
+    return p;
 }
 
 /**
@@ -67,14 +67,14 @@ void* malloc_aligned(size_t size, size_t alignment)
  */
 void* malloc_safe(size_t size)
 {
-	void *p;
+    void *p;
 
-	if ( !(p = malloc(size)) ) {
+    if ( !(p = malloc(size)) ) {
         fprintf(stderr, "%s: Allocation error\n", __FUNCTION__);
-		exit(EXIT_FAILURE);
-	}
+        exit(EXIT_FAILURE);
+    }
 
-	return p;
+    return p;
 }
 
 
@@ -88,27 +88,27 @@ void* malloc_safe(size_t size)
  */
 static ssize_t buffered_read(int fd, unsigned char *ptr)
 {
-	static int read_cnt = 0;
-	static unsigned char *read_ptr;
-	static unsigned char read_buf[BUFFERED_READ_SIZE];
+    static int read_cnt = 0;
+    static unsigned char *read_ptr;
+    static unsigned char read_buf[BUFFERED_READ_SIZE];
 
     // Every time we actually read from the file, read_cnt gets a 
     // value up to BUFFERED_READ_SIZE, so the branch is not taken in 
     // next invocations
     if ( read_cnt <= 0 ) {
 again:
-		if ( (read_cnt = read(fd, read_buf, sizeof(read_buf))) < 0 ) {
+        if ( (read_cnt = read(fd, read_buf, sizeof(read_buf))) < 0 ) {
             if ( errno == EINTR )
                 goto again;
             return -1;
-		} else if ( read_cnt == 0 ) // EOF       
+        } else if ( read_cnt == 0 ) // EOF       
             return 0;
-		read_ptr = read_buf;
-	}
+        read_ptr = read_buf;
+    }
 
-	read_cnt--;
-	*ptr = *read_ptr++;
-	return 1;
+    read_cnt--;
+    *ptr = *read_ptr++;
+    return 1;
 }
 
 
@@ -123,11 +123,11 @@ again:
  */
 ssize_t readline(int fd, char *vptr, size_t maxlen)
 {
-	ssize_t n, rc;
-	unsigned char c, *ptr;
-	
-	ptr = (unsigned char *)vptr;
-	for ( n = 1; n < maxlen; n++ ) {
+    ssize_t n, rc;
+    unsigned char c, *ptr;
+    
+    ptr = (unsigned char *)vptr;
+    for ( n = 1; n < maxlen; n++ ) {
         if ( (rc = buffered_read(fd, &c) ) == 1 ) {
             *ptr++ = c;
             // if at end of line, stop reading
@@ -139,15 +139,15 @@ ssize_t readline(int fd, char *vptr, size_t maxlen)
                 return 0;
             // EOF, having read something
             else
-				break;                  
+                break;                  
         } else
             return -1; // error      
-	}
+    }
 
-	if ( *(ptr-1) == '\n' )             
+    if ( *(ptr-1) == '\n' )             
         *(ptr-1) = '\0';
-	
-	return n;
+    
+    return n;
 }
 
 
